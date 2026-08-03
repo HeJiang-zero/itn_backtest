@@ -1,0 +1,6 @@
+numpy>=1.23
+pyarrow>=12
+PyYAML>=6
+
+[dev]
+pytest>=7

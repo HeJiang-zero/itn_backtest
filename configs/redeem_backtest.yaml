@@ -1,0 +1,68 @@
+# 唯一可修改的回测参数。中文说明见 redeem_backtest_parameters.md。
+universe:
+  underlying_symbol: "AAPL"
+  token_symbol: "AAPLx"
+  token_multiplier: 1.0
+  token_qty_per_trade: 10.0
+
+data:
+  rfq_source_mode: "raw_response"
+  max_token_price_age_s: null
+  max_stock_quote_age_s: 0.5
+  require_http_status: 200
+
+runtime:
+  engine_mode: "fast"
+
+capital:
+  initial_capital_usd: 20000.0
+  # 每笔空头冻结的保证金 = 实际卖空名义金额 × 此比例；redeem/回补平仓后释放。
+  short_margin_ratio: 1.5
+
+output:
+  save_opportunity_series: true
+  save_state_series: true
+  save_debug_trace: false
+  generate_charts: true
+
+rfq:
+  ttl_seconds: 30.0
+  available_from: "response_receive_time"
+  expiry_gate: "confirmation"
+  expiry_safety_buffer_ms: 500
+  one_time_use: true
+
+strategy:
+  # 毛 edge 必须严格大于「统一总成本 + 最低净利润目标」才交易。
+  # 现在为 0，表示扣除 15bps 总成本后只要仍然盈利就可套利。
+  minimum_net_profit_bps: 0.0
+  # null 表示不设人为并发笔数上限；20,000 美元可用资金和实时 BIDSIZE 仍会限制交易。
+  max_open_trades: null
+  reserve_quote_before_short: true
+
+stock_execution:
+  fill_policy: "top_of_book_fok"
+  use_protective_sell_limit: true
+  require_bid_size: true
+  short_slippage_bps: 0.0
+  cover_slippage_bps: 2.0
+
+costs:
+  total_cost_deduction_bps: 15.0
+
+latency_ms:
+  strategy_compute: 10
+  alpaca_submit: 20
+  exchange_route: 30
+  stock_fill_report: 50
+  rfq_submit: 20
+  fireblocks_policy: 0
+  fireblocks_sign: 500
+  tx_broadcast: 100
+  chain_confirm: 1000
+  redeem_submit: 100
+  redeem_chain_confirm: 1000
+  issuer_process: 1000
+  alpaca_journal: 1000
+  emergency_cover_submit: 50
+  emergency_cover_route: 50

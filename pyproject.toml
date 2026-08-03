@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "itn-backtest"
+version = "0.1.0"
+description = "Fast approximate backtest for Alpaca ITN redeem arbitrage"
+requires-python = ">=3.9"
+dependencies = [
+  "numpy>=1.23",
+  "pyarrow>=12",
+  "PyYAML>=6",
+  "matplotlib>=3.6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[project.scripts]
+itn-backtest = "itn_backtest.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
